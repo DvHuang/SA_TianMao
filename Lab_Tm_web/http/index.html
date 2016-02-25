@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Lab</title>
+	<style>
+		body { font-family: "Hiragino Sans GB", sans-serif; font-size:0.9em; margin-left: 100px;}
+		p { line-height:150%;}
+		#query { width: 400px; }
+		table { border-collapse: collapse; border-spacing: 0; padding: 0px; width: 800px;}
+	</style>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript">
+search = function() {
+	var query = $('input#query').val();
+	$.ajax({
+		url: "/json",
+		type: "GET",
+		data: { query: query },
+		dataType: "json",
+		success: function (result) {
+			var out = "<table border=0>"
+			var weibos = new Array();
+			for (var i = 0; i < result.length; i++) {
+				weibos.push(result[i]);
+			}
+			for (var i = 0; i < weibos.length; i++){
+			out += "<tr>"
+			out += "<td width=150px>";
+			out += weibos[i];
+			out += "<br>"
+			out += "</td>";
+			out += "</tr>";
+			}
+			out += "</table>"
+			$('div#output').html(out);
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+		alert(xhr.status);
+		alert(thrownError);
+		}
+	});
+};
+</script>
+</head>
+<body onload="search(0)">
+<h2>输入商品链接，回车等待</h2>
+<p><input type="text" id="query" oninput="search()"></p>
+<div id="output"></div>
+</body>
+</html>
